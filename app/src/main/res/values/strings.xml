@@ -4,19 +4,4 @@
     <string name="title_dashboard">Agregar a contactos</string>
 
     <string name="action_settings">Settings</string>
-    <string name="strNum1">1</string>
-    <string name="strNum2">2</string>
-    <string name="strNum3">3</string>
-    <string name="strNum4">4</string>
-    <string name="strNum5">5</string>
-    <string name="strNum6">6</string>
-    <string name="strNum7">7</string>
-    <string name="strNum8">8</string>
-    <string name="strNum9">9</string>
-    <string name="strNum0">0</string>
-    <string name="strNumeral">#</string>
-    <string name="strAsterisco">*</string>
-    <string name="strLlamar">Llamar</string>
-    <string name="strSpace"></string>
-    <string name="strDelete">C \r\n\r\n</string>
 </resources>
