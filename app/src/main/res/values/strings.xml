@@ -2,7 +2,7 @@
     <string name="app_name">CallCenter</string>
     <string name="title_call">Llamar</string>
     <string name="title_sms">Enviar sms</string>
-    <string name="title_contact">Agregar a contactos</string>
+    <string name="title_contact">Agregar</string>
 
     <string name="action_settings">Settings</string>
 </resources>
