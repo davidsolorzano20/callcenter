@@ -22,8 +22,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private final int PERMISSION_REQUEST_CONTACT = 2;
+    private final int PERMISSION_REQUEST_CONTACT = 1;
     private static final int PERMISSIONS_REQUEST_SEND_SMS = 0;
+    private static final int PERMISSIONS_REQUEST_CALL = 112;
     private Context mContext = MainActivity.this;
 
 
@@ -33,7 +34,20 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_sms:
+                case R.id.navigation_call:
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        String[] PERMISSIONS = {android.Manifest.permission.CALL_PHONE};
+                        if (!hasPermissions(mContext, PERMISSIONS)) {
+                            ActivityCompat.requestPermissions((Activity) mContext, PERMISSIONS, PERMISSIONS_REQUEST_CALL);
+                        } else {
+                            makeCall();
+                        }
+                    } else {
+                        makeCall();
+                    }
+                    return true;
+
+                    case R.id.navigation_sms:
                     if (Build.VERSION.SDK_INT >= 23) {
                         String[] PERMISSIONS = {Manifest.permission.SEND_SMS};
                         if (!hasPermissions(mContext, PERMISSIONS)) {
@@ -70,6 +84,16 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+    public void makeCall() {
+        String number = "+50555-25936";
+        Intent call = new Intent(Intent.ACTION_CALL);
+        call.setData(Uri.parse("tel:" + number));
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(call);
     }
 
 
@@ -125,6 +149,13 @@ public class MainActivity extends AppCompatActivity {
                     sendSMS();
                 } else {
                     Toast.makeText(mContext, "La aplicación no pudo guardar el contacto.", Toast.LENGTH_LONG).show();
+                }
+            }
+            case PERMISSIONS_REQUEST_CALL: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    makeCall();
+                } else {
+                    Toast.makeText(mContext, "La aplicación no pudo llamar.", Toast.LENGTH_LONG).show();
                 }
             }
         }
