@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">CallCenter</string>
     <string name="title_call">Llamar</string>
-    <string name="title_sms">Enviar mensaje</string>
+    <string name="title_sms">Enviar sms</string>
     <string name="title_contact">Agregar a contactos</string>
 
     <string name="action_settings">Settings</string>

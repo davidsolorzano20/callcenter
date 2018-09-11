@@ -9,21 +9,22 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final int PERMISSION_REQUEST_CONTACT = 1;
-    private static final int PERMISSIONS_REQUEST_SEND_SMS = 0;
+    private static final int PERMISSIONS_REQUEST_SEND_SMS = 123;
     private static final int PERMISSIONS_REQUEST_CALL = 112;
     private Context mContext = MainActivity.this;
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     return true;
 
-                    case R.id.navigation_sms:
+                case R.id.navigation_sms:
                     if (Build.VERSION.SDK_INT >= 23) {
                         String[] PERMISSIONS = {Manifest.permission.SEND_SMS};
                         if (!hasPermissions(mContext, PERMISSIONS)) {
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         String smsNumber = "55025936";
         String sms = "que paso";
 
-        Uri uri = Uri.parse("smsto:"+smsNumber);
+        Uri uri = Uri.parse("smsto:" + smsNumber);
         Intent smsIntent = new Intent(Intent.ACTION_SENDTO, uri);
         smsIntent.putExtra("sms_body", sms);
         startActivity(smsIntent);
@@ -135,30 +136,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CONTACT: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    addContacts();
-                } else {
-                    Toast.makeText(mContext, "La aplicación no pudo guardar el contacto.", Toast.LENGTH_LONG).show();
-                }
-            }
+        if (requestCode == PERMISSION_REQUEST_CONTACT) {
 
-            case PERMISSIONS_REQUEST_SEND_SMS: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendSMS();
-                } else {
-                    Toast.makeText(mContext, "La aplicación no pudo guardar el contacto.", Toast.LENGTH_LONG).show();
-                }
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                addContacts();
+            } else {
+                Toast.makeText(mContext, "La aplicación no pudo guardar el contacto.", Toast.LENGTH_LONG).show();
             }
-            case PERMISSIONS_REQUEST_CALL: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    makeCall();
-                } else {
-                    Toast.makeText(mContext, "La aplicación no pudo llamar.", Toast.LENGTH_LONG).show();
-                }
+        } else if (requestCode == PERMISSIONS_REQUEST_SEND_SMS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sendSMS();
+            } else {
+                Toast.makeText(mContext, "La aplicación no pudo guardar el contacto.", Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == PERMISSIONS_REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makeCall();
+            } else {
+                Toast.makeText(mContext, "La aplicación no pudo llamar.", Toast.LENGTH_LONG).show();
             }
         }
+
     }
 
     private static boolean hasPermissions(Context context, String... permissions) {
@@ -172,4 +170,10 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+        }
+    }
 }
